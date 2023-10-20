@@ -48,6 +48,31 @@ async function run() {
       const result = await productsCollection.insertOne(product);
       res.send(result);
     });
+
+    // Product Update
+    app.put("/products/:id", async (req, res) => {
+      const id = req.params.id;
+      const productData = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const product = {
+        $set: {
+          photo: productData.photo,
+          rating: productData.rating,
+          name: productData.name,
+          brandName: productData.brandName,
+          type: productData.type,
+          price: productData.price,
+        },
+      };
+      const result = await productsCollection.updateOne(
+        filter,
+        product,
+        options
+      );
+      res.send(result);
+    });
+
     app;
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
