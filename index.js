@@ -90,6 +90,14 @@ async function run() {
       res.send(result);
     });
 
+    //cart product delete
+    app.delete("/cart/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await cartCollection.deleteOne(query);
+      res.send(result);
+    });
+
     app;
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
